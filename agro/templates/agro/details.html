@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title  %}
+{{plant.common_name}}
+{% endblock title  %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "css/details.css" %}">
+{% endblock css %}
+
+{% block script %}
+<script src="{% static "js/details.js" %}"></script>
+{% endblock script %}
+
+{% block body %}
+    <!-- product section -->
+    <section class="container product-container">
+        <!-- left side -->
+        <div class="img-card">
+            <img src="{{plant.image.url}}" alt="{{ plant.common_name }}" class="card-img">
+        </div>
+        <!-- Right side -->
+        <div class="product-info">
+            <h3>{{ plant.common_name }}</h3>
+            <h5 class="card-text"><strong>Scientific Name:</strong> {{ plant.scientific_name }}</h5>
+            <md-block>{{ plant.description }}</md-block>
+
+            <div class="table">
+                <div class="delivery">
+                    <p>Properties</p> <p>Value</p> 
+                </div>
+                
+                {% for k,v in data.items %}
+                    <hr>
+                    <div class="delivery">
+                        <p>{{k}}</p> 
+                        <p>{{v}}</p> 
+                        
+                    </div>
+                {% endfor %}
+                
+            </div>
+            <p class="card-text references"><strong>References:</strong> {{ plant.references }}</p>
+        </div>
+        
+    </section>
+    <!-- script tags -->
+{% endblock body %}

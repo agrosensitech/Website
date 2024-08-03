@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="{{plant.image.url}}" alt="{{ plant.common_name }}" class="card-img">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h2 class="card-title">{{ plant.common_name }}</h2>
+                    <p class="card-text"><strong>Scientific Name:</strong> {{ plant.scientific_name }}</p>
+                    <p class="card-text">{{ plant.description }}</p>
+                    <div class="card-text">
+                        <h4>Table Data:</h4>
+                        <table class="table">
+                            <tr>
+                                <th>
+                                    Key
+                                </th>
+                                <th>
+                                    Value
+                                </th>
+                            </tr>
+                            {% for key, value in plant.table_data.items %}
+                                <tr>
+                                    <td>
+                                        {{key}}
+                                    </td>
+                                    <td>
+                                        {{value}}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <p class="card-text"><strong>References:</strong> {{ plant.references }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock body %}

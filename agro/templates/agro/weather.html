@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}
+Weather
+{% endblock title %}
+    {% block css %}
+    <link rel="shortcut icon" href="img/bg.jpg" type="image/x-icon">
+    <link rel="stylesheet" href='{% static "css/weather.css" %}'>
+    {% endblock css %}
+
+
+{% block body %}
+    <div class="app-main" id="parent">
+        <div class="header">
+            <h4>Get Weather</h4>
+        </div>
+        <div class="searchInputBox">
+            <input type="text" name="" id="input-box" class="input-box" placeholder="enter city name">
+        </div>
+        <div class="weather-body" id="weather-body">
+            <!-- weather-body will be append through JavaScript -->
+        </div>
+            
+    </div>
+   
+    <script type="text/javascript">
+        DJANGO_STATIC_URL = '{{ STATIC_URL }}css/';
+    </script>
+    <script src='{% static "js/weather.js" %}'></script>
+    <!-- sweetalert cdn........ -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% endblock body %}

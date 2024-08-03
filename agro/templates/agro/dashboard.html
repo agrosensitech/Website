@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block title  %}
+Dashboard
+{% endblock title  %}
+{% block css %}
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    /* Basic styles for layout */
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .chart-box {
+      width: 45%;
+      min-height: 250px;
+      margin: 10px;
+      border: 1px solid #ddd;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .chart-title {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  </style>
+{% endblock css %}
+{% block body  %}
+
+  <div class="container">
+    <div class="chart-box">
+      <h3 class="chart-title">Line Chart (Sales Trend)</h3>
+      <canvas id="lineChart" width="400" height="200"></canvas>
+    </div>
+    <div class="chart-box">
+      <h3 class="chart-title">Bar Chart (Top Products)</h3>
+      <canvas id="barChart" width="400" height="200"></canvas>
+    </div>
+    <div class="chart-box">
+      <h3 class="chart-title">Doughnut Chart (Traffic Sources)</h3>
+      <canvas id="doughnutChart" width="400" height="200"></canvas>
+    </div>
+    <div class="chart-box">
+      <h3 class="chart-title">Pie Chart (User Demographics)</h3>
+      <canvas id="pieChart" width="400" height="200"></canvas>
+    </div>
+    {% comment %} <div class="chart-box">
+      <h3 class="chart-title">Radar Chart (Performance Metrics)</h3>
+      <canvas id="radarChart" width="400" height="200"></canvas>
+    </div> {% endcomment %}
+  </div>
+
+  <script>
+    // Generate random data (replace with your actual data)
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
+    const salesData = [50, 70, 60, 80, 90];
+    const productData = [40, 65, 30, 85, 55]; // Replace with product names and sales figures
+    const trafficData = [30, 50, 20]; // Replace with source names and traffic percentages
+    const userData = [25, 40, 15, 20]; // Replace with demographic categories and percentages
+    const metricData = [
+      {
+        label: 'Metric 1',
+        data: [85, 65, 55, 40, 75],
+      },
+      {
+        label: 'Metric 2',
+        data: [70, 80, 60, 50, 90],
+      }
+    ];
+
+    // Line Chart (Sales Trend)
+    const lineChart = document.getElementById('lineChart').getContext('2d');
+    const lineChartConfig = {
+      type: 'line',
+      data: {
+        labels: months,
+        datasets: [{
+          label: 'Monthly Sales',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          data: salesData,
+          fill: true,
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+              }
+            }]
+        }
+    }
+    };
+new Chart(lineChart, lineChartConfig);
+
+  // Bar Chart (Top Products)
+  const barChart = document.getElementById('barChart').getContext('2d');
+  const barChartConfig = {
+    type: 'bar',
+    data: {
+      labels: productData.slice(0, 5), // Assuming you have product names in productData, limit to top 5
+      datasets: [{
+        label: 'Product Sales',
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(255, 140, 0, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(255, 140, 0, 1)'
+        ],
+        data: productData.slice(0, 5) // Limit data to top 5 products
+      }]
+    },
+    options: {
+      scales: {
+        xAxes: [{
+          stacked: true // Stack bars for comparison
+        }],
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  };
+  new Chart(barChart, barChartConfig);
+
+  // Doughnut Chart (Traffic Sources)
+  const doughnutChart = document.getElementById('doughnutChart').getContext('2d');
+  const doughnutChartConfig = {
+    type: 'doughnut',
+    data: {
+      labels: trafficData.slice(0, 3), // Limit to top 3 sources
+      datasets: [{
+        label: 'Traffic Sources',
+        data: trafficData.slice(0, 3),
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)'
+        ],
+      }]
+    }
+  };
+  new Chart(doughnutChart, doughnutChartConfig);
+
+  // Pie Chart (User Demographics)
+  const pieChart = document.getElementById('pieChart').getContext('2d');
+  const pieChartConfig = {
+    type: 'pie',
+    data: {
+      labels: userData,
+      datasets: [{
+        label: 'User Demographics',
+        data: userData,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)'
+        ],
+      }]
+    }
+  };
+  new Chart(pieChart, pieChartConfig);
+
+  // Radar Chart (Performance Metrics)
+  const radarChart = document.getElementById('radarChart').getContext('2d');
+  const radarChartConfig = {
+    type: 'radar',
+    data: {
+      labels: ['Metric 1', 'Metric 2', /* Add more metric labels here */],
+      datasets: metricData
+    },
+    options: {
+      scale: {
+        pointLabels: {
+          fontSize: 12
+        }
+      }
+    }
+  };
+  new Chart(radarChart, radarChartConfig);
+  
+</script>
+{% endblock body  %}  

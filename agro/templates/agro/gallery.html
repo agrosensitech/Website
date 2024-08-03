@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "css/gallery.css" %}">
+{% endblock css %}
+
+{% block title %} Gallery {% endblock title %}
+
+{% block body %}
+
+<div class="container">
+    <h1 class="title">Gallery</h1>
+        <div class="grid-container">
+    {% for p in  plants %}
+            <a href="{% url "details" p.id %}">
+                <div class="wrapper">
+                    <div class="image">
+                        <img src="{{p.image.url}}" alt="">
+                        <div class="content">
+                            <h1>{{p.common_name}}</h1>
+                            <p>{{p.scientific_name}}</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+    {% endfor %}
+        </div>
+</div>
+{% endblock body %}

@@ -6,7 +6,7 @@ Dashboard
 {% block css %}
 
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
   <style>
     /* Basic styles for layout */
     .container {
@@ -18,8 +18,9 @@ Dashboard
       padding: 20px;
     }
     .chart-box {
-      width: 45%;
-      min-height: 250px;
+      min-width: 45%;
+      max-width: 80%;
+      min-height: 500px;
       margin: 10px;
       border: 1px solid #ddd;
       padding: 10px;
@@ -30,184 +31,147 @@ Dashboard
       font-weight: bold;
       margin-bottom: 10px;
     }
+    h1 {
+      text-align: center;
+    }
   </style>
 {% endblock css %}
 {% block body  %}
 
-  <div class="container">
-    <div class="chart-box">
-      <h3 class="chart-title">Line Chart (Sales Trend)</h3>
-      <canvas id="lineChart" width="400" height="200"></canvas>
-    </div>
-    <div class="chart-box">
-      <h3 class="chart-title">Bar Chart (Top Products)</h3>
-      <canvas id="barChart" width="400" height="200"></canvas>
-    </div>
-    <div class="chart-box">
-      <h3 class="chart-title">Doughnut Chart (Traffic Sources)</h3>
-      <canvas id="doughnutChart" width="400" height="200"></canvas>
-    </div>
-    <div class="chart-box">
-      <h3 class="chart-title">Pie Chart (User Demographics)</h3>
-      <canvas id="pieChart" width="400" height="200"></canvas>
-    </div>
-    {% comment %} <div class="chart-box">
-      <h3 class="chart-title">Radar Chart (Performance Metrics)</h3>
-      <canvas id="radarChart" width="400" height="200"></canvas>
-    </div> {% endcomment %}
+<h1>Dashboard</h1>
+<div class="container">
+  
+  <div class="chart-box">
+    <h3 class="chart-title">Normal, Withered and dead plants</h3>
+    <canvas id="pieChart" style="width:100%;max-width:400px;height:300px"></canvas>
+  </div>
+  <div class="chart-box">
+    <h3  class="chart-title">Water Percentage of Each Plant</h3>
+    <canvas id="barChart" style="width:100%;max-width:600px"></canvas>
+  </div>
+  <div class="chart-box" style="width: 100%;">
+    <h3  class="chart-title">Growth of Each Plant(cm)</h3>
+    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
   </div>
 
-  <script>
-    // Generate random data (replace with your actual data)
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
-    const salesData = [50, 70, 60, 80, 90];
-    const productData = [40, 65, 30, 85, 55]; // Replace with product names and sales figures
-    const trafficData = [30, 50, 20]; // Replace with source names and traffic percentages
-    const userData = [25, 40, 15, 20]; // Replace with demographic categories and percentages
-    const metricData = [
-      {
-        label: 'Metric 1',
-        data: [85, 65, 55, 40, 75],
-      },
-      {
-        label: 'Metric 2',
-        data: [70, 80, 60, 50, 90],
-      }
-    ];
+</div>
 
-    // Line Chart (Sales Trend)
-    const lineChart = document.getElementById('lineChart').getContext('2d');
-    const lineChartConfig = {
-      type: 'line',
-      data: {
-        labels: months,
-        datasets: [{
-          label: 'Monthly Sales',
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          data: salesData,
-          fill: true,
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-              }
-            }]
-        }
+
+<script>
+var xValues = ["Normal-60%", "Withered-30%", "Dead-10%"];
+var yValues = [60, 30, 10];
+var barColors = [
+  "Green",
+  "Red",
+  "Black"
+];
+
+new Chart("pieChart", {
+  type: "pie",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    responsive: true,
+    title: {
+      display: true,
+      text: "Percentage of all Category of Plants"
     }
-    };
-new Chart(lineChart, lineChartConfig);
+  }
+});
 
-  // Bar Chart (Top Products)
-  const barChart = document.getElementById('barChart').getContext('2d');
-  const barChartConfig = {
-    type: 'bar',
-    data: {
-      labels: productData.slice(0, 5), // Assuming you have product names in productData, limit to top 5
-      datasets: [{
-        label: 'Product Sales',
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(255, 140, 0, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(255, 140, 0, 1)'
-        ],
-        data: productData.slice(0, 5) // Limit data to top 5 products
-      }]
+
+var names = ["Dayana Tulsi", "Tulsi", "Marigold", "Sadabahar", "Alovera","Pudina","Paluo","Bisalyakarani"];
+var yValues = [55, 49, 44, 24,27,35,50,48];
+var barColors = ["red", "green","blue","orange","skyblue","Yellow","Purple","Pink"];
+
+new Chart("barChart", {
+  type: "bar",
+  data: {
+  labels: names,
+  datasets: [{
+    backgroundColor: barColors,
+    data: yValues
+  }]
+},
+  options: {
+    indexAxis: 'x',
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Height of Each Plant"
     },
-    options: {
-      scales: {
-        xAxes: [{
-          stacked: true // Stack bars for comparison
-        }],
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      }
+    scales: {
+      xAxes: [{ticks: {min: 10, max:60}}]
     }
-  };
-  new Chart(barChart, barChartConfig);
+  }
+});
 
-  // Doughnut Chart (Traffic Sources)
-  const doughnutChart = document.getElementById('doughnutChart').getContext('2d');
-  const doughnutChartConfig = {
-    type: 'doughnut',
-    data: {
-      labels: trafficData.slice(0, 3), // Limit to top 3 sources
-      datasets: [{
-        label: 'Traffic Sources',
-        data: trafficData.slice(0, 3),
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)'
-        ],
-      }]
-    }
-  };
-  new Chart(doughnutChart, doughnutChartConfig);
+xValues = "jan feb mar apr may jun jul aug sep oct nov dec".split(" ");
 
-  // Pie Chart (User Demographics)
-  const pieChart = document.getElementById('pieChart').getContext('2d');
-  const pieChartConfig = {
-    type: 'pie',
-    data: {
-      labels: userData,
-      datasets: [{
-        label: 'User Demographics',
-        data: userData,
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)'
-        ],
-      }]
-    }
-  };
-  new Chart(pieChart, pieChartConfig);
-
-  // Radar Chart (Performance Metrics)
-  const radarChart = document.getElementById('radarChart').getContext('2d');
-  const radarChartConfig = {
-    type: 'radar',
-    data: {
-      labels: ['Metric 1', 'Metric 2', /* Add more metric labels here */],
-      datasets: metricData
-    },
-    options: {
-      scale: {
-        pointLabels: {
-          fontSize: 12
+new Chart("myChart", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [{ 
+      label:'Dayana Tulsi',
+      data: 	[3, 7, 11, 15, 18, 20, 22, 23, 24, 25],
+      borderColor: "red",
+      fill: false
+    }, { 
+      label:'Tulsi',
+      data: [2, 4, 8, 12, 15, 18, 20, 18, 15, 12]
+      ,
+      borderColor: "green",
+      fill: false
+    }, { 
+      label:'Marigold',
+      data: [1, 2, 3, 5, 9, 15, 22, 30, 35, 40]
+      ,
+      borderColor: "blue",
+      fill: false
+    },{ 
+      label: 'Sadabhar',
+      data: [2, 5, 10, 17, 25, 35, 42, 48, 52, 55]
+      ,
+      borderColor: "yellow",
+      fill: false
+},{ 
+      label: 'Aloevera',
+      data: [2, 6, 10, 14, 18, 22, 26, 30, 34, 38],
+      borderColor: "orange",
+      fill: false
+    },{ 
+      label: 'Pudina',
+      data: 	[4, 8, 12, 16, 20, 24, 28, 32, 36, 40],
+      borderColor: "purple",
+      fill: false
+    },{ 
+      label: 'Paluo',
+      data: 	[0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
+      borderColor: "brown",
+      fill: false
+    },{ 
+      label: 'Bisalyakarani',
+      data: 	[3, 7, 12, 18, 25, 32, 39, 46, 53, 60],
+      borderColor: "grey",
+      fill: false
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scale: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
         }
-      }
+      }]
     }
-  };
-  new Chart(radarChart, radarChartConfig);
-  
+  }
+});
 </script>
 {% endblock body  %}  
